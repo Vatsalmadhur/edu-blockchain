@@ -3,6 +3,7 @@ import "./Navbar.css";
 import { ethers } from "ethers";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
+import { signup } from "../../ContractMethods";
 const Navbar = ({ children }) => {
   let [accountChanged, setAccChange] = useState(true);
   const [currentAccount, setCurrentAccount] = useState("");
@@ -43,6 +44,7 @@ const Navbar = ({ children }) => {
       });
 
       setCurrentAccount(accounts[0]);
+        await signup("Username", true)
     } catch (error) {
       setUser({
         connected: false,

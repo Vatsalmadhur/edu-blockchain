@@ -1,0 +1,75 @@
+{
+  "_format": "hh-sol-cache-2",
+  "files": {
+    "/home/anurag/edu-blockchain/blockchain/contracts/AdBid.sol": {
+      "lastModificationDate": 1700289466971,
+      "contentHash": "39f79622fa073b7bfa0ce719a645386e",
+      "sourceName": "contracts/AdBid.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        ">=0.6.0 <0.9.0"
+      ],
+      "artifacts": [
+        "AdBid"
+      ]
+    },
+    "/home/anurag/edu-blockchain/blockchain/contracts/DocManager.sol": {
+      "lastModificationDate": 1700298397314,
+      "contentHash": "91bd8fb66cbfe15ffca548a1b59edef3",
+      "sourceName": "contracts/DocManager.sol",
+      "solcConfig": {
+        "version": "0.8.9",
+        "settings": {
+          "optimizer": {
+            "enabled": false,
+            "runs": 200
+          },
+          "outputSelection": {
+            "*": {
+              "*": [
+                "abi",
+                "evm.bytecode",
+                "evm.deployedBytecode",
+                "evm.methodIdentifiers",
+                "metadata"
+              ],
+              "": [
+                "ast"
+              ]
+            }
+          }
+        }
+      },
+      "imports": [],
+      "versionPragmas": [
+        "^0.8.0"
+      ],
+      "artifacts": [
+        "DocManager"
+      ]
+    }
+  }
+}
