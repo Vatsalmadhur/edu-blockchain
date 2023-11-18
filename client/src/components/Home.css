@@ -1,0 +1,9 @@
+.heading{
+    text-transform: uppercase;
+    background: rgb(0,242,96);
+	background: linear-gradient(90deg, rgba(0,242,96,1) 30%, rgba(5,117,230,1) 70%);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+    font-family: 'Raleway', sans-serif;
+
+}

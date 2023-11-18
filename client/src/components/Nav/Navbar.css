@@ -1,0 +1,41 @@
+.navMain {
+    width: 100%;
+    height: auto;
+    min-height: 70px;
+    padding: 10px 20px;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 1.3rem;
+    color: #fff;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .ad {
+    color: var(--pink);
+  }
+  .logo h2 {
+    color: var(--yellow);
+  }
+  .connect {
+    gap: 10px;
+  }
+  .connect button {
+    min-height: 40px;
+    min-width: 120px;
+    border-radius: 10px;
+    font-size: 1.3rem;
+    padding: 8px;
+    color: var(--blue) !important;
+  }
+
+  .navMain a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  @media only screen and (max-width: 400px) {
+    .navMain {
+      justify-content: center;
+      align-items: center;
+      flex-direction: column !important;
+    }
+  }
