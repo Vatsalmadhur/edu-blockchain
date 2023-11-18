@@ -94,7 +94,7 @@ const Navbar = ({ children }) => {
         <div className="flex logo">
           <Link to="/">
             <h2>
-              <span className="ad"><img src="/EduSafe.svg" alt="" /></span>
+              <span className="ad"><img className="logoImg" src="/EduSafe.svg" alt="" /></span>
             </h2>
           </Link>
           </div>
