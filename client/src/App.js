@@ -7,8 +7,9 @@ function App() {
     <ChakraBaseProvider theme={extendTheme({})}>
    <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/home" element={<Home/>} />
+        <Route path="/" element={<Layout>
+          {/* <Route path="/home" element={<Home/>} /> */}
+        </Layout>}>
           {/* <Route path="blogs" element={<Blogs />} />
           <Route path="contact" element={<Contact />} />
           <Route path="*" element={<NoPage />} /> */}

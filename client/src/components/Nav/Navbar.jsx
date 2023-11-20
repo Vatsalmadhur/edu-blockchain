@@ -119,7 +119,7 @@ const Navbar = ({ children }) => {
         <div className="flex account">
           <div className="flex connect">
             {children}
-            <button onClick={user.connected ? () => {} : connectWallet}>
+            <button className="cntBtn" onClick={user.connected ? () => {} : connectWallet}>
               {user.connected
                 ? `${user.address.toString().substring(0, 5)}...${user.address
                     .toString()
