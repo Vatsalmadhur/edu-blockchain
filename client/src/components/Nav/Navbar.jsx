@@ -103,7 +103,7 @@ const Navbar = ({ children }) => {
           </Box>
 
           <Box className="flex linkBox" >
-          <Link to="/home">
+          <Link to="/">
             <h2>
               <span className="ad">Home</span>
             </h2>
@@ -120,7 +120,7 @@ const Navbar = ({ children }) => {
           </Link>
         </Box>
         <Box className="flex account">
-          {/* <Toggle/> */}
+          <Toggle/>
           <Box className="flex connect">
             {children}
             <Button className="cntBtn" onClick={user.connected ? () => {} : connectWallet}>
@@ -135,7 +135,6 @@ const Navbar = ({ children }) => {
 
         </Box>
       </Box>
-      <Toggle/>
 
     </>
   );
