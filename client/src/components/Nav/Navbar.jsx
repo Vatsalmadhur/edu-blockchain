@@ -3,6 +3,9 @@ import "./Navbar.css";
 import { ethers } from "ethers";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "@chakra-ui/react";
+import { Toggle } from "../../layout/Toggle";
+import { Box } from "@chakra-ui/react";
 const Navbar = ({ children }) => {
   let [accountChanged, setAccChange] = useState(true);
   const [currentAccount, setCurrentAccount] = useState("");
@@ -90,16 +93,16 @@ const Navbar = ({ children }) => {
 
   return (
     <>
-      <div id="nav" className="flex navMain">
-        <div className="flex logo">
+      <Box id="nav" className="flex navMain">
+        <Box className="flex logo">
           <Link to="/">
             <h2>
               <span className="ad"><img className="logoImg" src="/EduSafe.svg" alt="" /></span>
             </h2>
           </Link>
-          </div>
+          </Box>
 
-          <div className="flex linkBox" >
+          <Box className="flex linkBox" >
           <Link to="/home">
             <h2>
               <span className="ad">Home</span>
@@ -115,20 +118,25 @@ const Navbar = ({ children }) => {
               <span className="ad">Verify</span>
             </h2>
           </Link>
-        </div>
-        <div className="flex account">
-          <div className="flex connect">
+        </Box>
+        <Box className="flex account">
+          {/* <Toggle/> */}
+          <Box className="flex connect">
             {children}
-            <button className="cntBtn" onClick={user.connected ? () => {} : connectWallet}>
+            <Button className="cntBtn" onClick={user.connected ? () => {} : connectWallet}>
               {user.connected
                 ? `${user.address.toString().substring(0, 5)}...${user.address
                     .toString()
                     .substring(38, 42)}`
                 : "Connect"}
-            </button>
-          </div>
-        </div>
-      </div>
+            </Button>
+
+          </Box>
+
+        </Box>
+      </Box>
+      <Toggle/>
+
     </>
   );
 };
