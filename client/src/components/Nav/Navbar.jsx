@@ -6,14 +6,15 @@ import { Link } from "react-router-dom";
 import { Button } from "@chakra-ui/react";
 import { Toggle } from "../../layout/Toggle";
 import { Box } from "@chakra-ui/react";
+import { HamburgerIcon } from "@chakra-ui/icons";
 const Navbar = ({ children }) => {
   let [accountChanged, setAccChange] = useState(true);
   const [currentAccount, setCurrentAccount] = useState("");
   const [correctNetwork, setCorrectNetwork] = useState(false);
   const [user, setUser] = useState({
-    connected:false,
-    address:null
-})
+    connected: false,
+    address: null
+  })
 
   const connectWallet = async () => {
     try {
@@ -89,51 +90,65 @@ const Navbar = ({ children }) => {
     getAccount();
   }, [accountChanged]);
 
-  const disconnectwallet = () => {};
+  const disconnectwallet = () => { };
+
+  //hamburger
+  const [isOpen, setIsOpen] = useState(false);
+
 
   return (
     <>
-      <Box id="nav" className="flex navMain">
-        <Box className="flex logo">
-          <Link to="/">
+      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" border="2px solid red">
+        <Box className="flex logo" >
+          <Link to="/" onClick={() => setIsOpen()}>
             <h2>
               <span className="ad"><img className="logoImg" src="/EduSafe.svg" alt="" /></span>
             </h2>
           </Link>
-          </Box>
+        </Box>
 
-          <Box className="flex linkBox" >
-          <Link to="/">
+        <Box className={isOpen ? 'flex linkResp' : 'flex linkBox'}  >
+          <Link to="/" onClick={() => setIsOpen()}>
             <h2>
               <span className="ad">Home</span>
             </h2>
           </Link>
-          <Link to="/dashboard">
+          <Link to="/dashboard" onClick={() => setIsOpen()}>
             <h2>
               <span className="ad">Dashboard</span>
             </h2>
           </Link>
-          <Link to="/verify">
+          <Link to="/verify" onClick={() => setIsOpen()}>
             <h2>
               <span className="ad">Verify</span>
             </h2>
           </Link>
         </Box>
-        <Box className="flex account">
-          <Toggle/>
-          <Box className="flex connect">
-            {children}
-            <Button className="cntBtn" onClick={user.connected ? () => {} : connectWallet}>
-              {user.connected
-                ? `${user.address.toString().substring(0, 5)}...${user.address
+
+
+          <Box
+          className={isOpen?"flex account showBtn":"flex account hideBtn"}
+          gap={6}
+           >
+            <Box className="flex connect">
+              {children}
+              <Button my={{base:'20px',md:''}} className="cntBtn" onClick={user.connected ? () => { } : connectWallet}>
+                {user.connected
+                  ? `${user.address.toString().substring(0, 5)}...${user.address
                     .toString()
                     .substring(38, 42)}`
-                : "Connect"}
-            </Button>
+                  : "Connect"}
+              </Button>
+
+            </Box>
 
           </Box>
+        <Box position="absolute" right={{base:'10px',md:"150px"}} top= {{base:'30px',md:""}} width="auto"  >
+          <Toggle />
+          <HamburgerIcon
+            display={{base:'inline-block',  md:"none"}}
+            width="50px" height="25px" onClick={() => setIsOpen(!isOpen)} /></Box>
 
-        </Box>
       </Box>
 
     </>
