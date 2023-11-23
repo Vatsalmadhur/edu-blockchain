@@ -6,16 +6,19 @@ import { ArrowUpIcon } from '@chakra-ui/icons'
 export const Verify = () => {
   const bg = useColorModeValue('white', 'blackAlpha.50');
   const gradientBorderStyle = {
-    height:"500px",
-     width:"400px",
+    maxHeight:"500px",
+    height:'50vh',
+    maxWidth:"400px",
+     width:"90%",
     borderWidth: '2px',
     borderImage: 'linear-gradient(45deg, #0575e6, #00eb67) 30',
+
   };
   const darkBtn = useColorModeValue('cyan.500', 'cyan.500');
   return (
-    <Flex height="100vh" width="100vw" justifyContent="center" alignItems="center" bg={bg} >
+    <Flex minHeight="80vh" width="100vw" justifyContent="center" alignItems="center" bg={bg} >
 
-        <Flex height="500px" width="400px" justifyContent="space-around" direction="column" alignItems="center" boxShadow="dark-lg"
+        <Flex  justifyContent="space-around" direction="column" alignItems="center" boxShadow="dark-lg"
         // className='gradBrdr'
         style={gradientBorderStyle}
          >

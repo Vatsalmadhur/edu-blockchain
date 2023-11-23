@@ -37,12 +37,11 @@
 
 
   }
-
-
   .ad {
     margin:0 10px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: 400;
+    font-family: 'Ubuntu',sans-serif;
   }
   .logo h2 {
     color: var(--yellow);

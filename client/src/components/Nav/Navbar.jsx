@@ -98,7 +98,7 @@ const Navbar = ({ children }) => {
 
   return (
     <>
-      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" border="2px solid red">
+      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" >
         <Box className="flex logo" >
           <Link to="/" onClick={() => setIsOpen()}>
             <h2>
@@ -108,7 +108,7 @@ const Navbar = ({ children }) => {
         </Box>
 
         <Box className={isOpen ? 'flex linkResp' : 'flex linkBox'}  >
-          <Link to="/" onClick={() => setIsOpen()}>
+          <Link to="/" className="link" onClick={() => setIsOpen()}>
             <h2>
               <span className="ad">Home</span>
             </h2>
@@ -132,7 +132,7 @@ const Navbar = ({ children }) => {
            >
             <Box className="flex connect">
               {children}
-              <Button my={{base:'20px',md:''}} className="cntBtn" onClick={user.connected ? () => { } : connectWallet}>
+              <Button my={{base:'20px',md:''}} fontFamily="Ubuntu"  onClick={user.connected ? () => { } : connectWallet}>
                 {user.connected
                   ? `${user.address.toString().substring(0, 5)}...${user.address
                     .toString()
