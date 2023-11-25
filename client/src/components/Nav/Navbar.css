@@ -9,20 +9,14 @@
     height: auto;
     min-height: 70px;
     padding: 0px 20px;
-    background-color: rgba(0, 0, 0, 0.2);
     font-size: 1.3rem;
-    color: #000;
-    background-color: #fff;
     flex-wrap: wrap;
     justify-content: space-between;
     /* border: 2px solid red; */
   }
-
   .navResp {
     flex-direction: column;
     align-items: start;
-
-    /* border: 2px solid red; */
   }
   .linkResp{
     display: flex;
@@ -34,17 +28,12 @@
     .linkBox{
       display: none;
     }
-
-
   }
   .ad {
     margin:0 10px;
     font-size: 1.5rem;
     font-weight: 400;
     font-family: 'Ubuntu',sans-serif;
-  }
-  .logo h2 {
-    color: var(--yellow);
   }
   .connect {
     gap: 10px;
@@ -55,12 +44,6 @@
     border-radius: 10px;
     font-size: 1.3rem;
     padding: 8px;
-    color: var(--blue) !important;
-  }
-
-  .navMain a {
-    color: var(--blue);
-    text-decoration: none;
   }
 .logoImg{
   width: 150px;
@@ -73,6 +56,4 @@
   .hideBtn{
     display: none;
   }
-
-
 }

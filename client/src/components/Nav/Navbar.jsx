@@ -3,10 +3,11 @@ import "./Navbar.css";
 import { ethers } from "ethers";
 import { useEffect, useState, useCallback, useContext } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
+import { Button, Text } from "@chakra-ui/react";
 import { Toggle } from "../../layout/Toggle";
 import { Box } from "@chakra-ui/react";
 import { HamburgerIcon } from "@chakra-ui/icons";
+import { useColorModeValue } from "@chakra-ui/react";
 const Navbar = ({ children }) => {
   let [accountChanged, setAccChange] = useState(true);
   const [currentAccount, setCurrentAccount] = useState("");
@@ -94,34 +95,34 @@ const Navbar = ({ children }) => {
 
   //hamburger
   const [isOpen, setIsOpen] = useState(false);
+  const bg = useColorModeValue('white', 'blackAlpha.50');
+  const darkBtn = useColorModeValue('cyan.500', 'cyan.500');
 
 
   return (
     <>
-      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" >
+      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" bg={bg} py="10px">
         <Box className="flex logo" >
           <Link to="/" onClick={() => setIsOpen()}>
-            <h2>
-              <span className="ad"><img className="logoImg" src="/EduSafe.svg" alt="" /></span>
-            </h2>
+              <Text className="ad"><img className="logoImg" src="/EduSafe.svg" alt="" /></Text>
           </Link>
         </Box>
 
         <Box className={isOpen ? 'flex linkResp' : 'flex linkBox'}  >
           <Link to="/" className="link" onClick={() => setIsOpen()}>
-            <h2>
-              <span className="ad">Home</span>
-            </h2>
+
+              <Text className="ad">Home</Text>
+
           </Link>
           <Link to="/dashboard" onClick={() => setIsOpen()}>
-            <h2>
-              <span className="ad">Dashboard</span>
-            </h2>
+
+              <Text className="ad">Dashboard</Text>
+
           </Link>
           <Link to="/verify" onClick={() => setIsOpen()}>
-            <h2>
-              <span className="ad">Verify</span>
-            </h2>
+
+              <Text className="ad">Verify</Text>
+
           </Link>
         </Box>
 
@@ -132,7 +133,7 @@ const Navbar = ({ children }) => {
            >
             <Box className="flex connect">
               {children}
-              <Button my={{base:'20px',md:''}} fontFamily="Ubuntu"  onClick={user.connected ? () => { } : connectWallet}>
+              <Button my={{base:'20px',md:''}} fontFamily="Ubuntu" bg="none" border="2px solid" borderColor={darkBtn}  onClick={user.connected ? () => { } : connectWallet}>
                 {user.connected
                   ? `${user.address.toString().substring(0, 5)}...${user.address
                     .toString()

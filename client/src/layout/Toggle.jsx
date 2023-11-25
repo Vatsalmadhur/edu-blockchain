@@ -6,7 +6,8 @@ export const Toggle = () => {
     const {colorMode,toggleColorMode}=useColorMode();
   return (
     <>
-    <Button borderRadius="15px" onClick={()=>toggleColorMode()}>{colorMode==="dark"?<SunIcon/>:<MoonIcon/>}</Button>
+    <Button borderRadius="15px" onClick={()=>toggleColorMode()}>{colorMode==="dark"?<SunIcon/>:<MoonIcon/>}
+    </Button>
     </>
   )
 }
