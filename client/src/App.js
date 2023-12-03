@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraBaseProvider, extendTheme } from '@chakra-ui/react';
-import { Home } from './components/Home';
-import { Verify } from './components/Verify';
-import { Dashboard } from './components/Dashboard';
+import { Home } from './components/Home/Home';
+import { Verify } from './components/Verify/Verify';
+import { Dashboard } from './components/Dashboard/Dashboard';
 import { Layout } from './layout/Layout';
 function App() {
   return (

@@ -144,7 +144,7 @@ const Navbar = ({ children }) => {
           </Box>
 
         </Box>
-        <Box position="absolute" right={{ base: '10px', md: "150px" }} top={{ base: '30px', md: "" }} width="auto"  >
+        <Box position="absolute" right={{ base: '10px', md: "170px" }} top={{ base: '30px', md: "" }} width="auto"  >
           <Toggle />
 
             {isOpen ? <CloseIcon display={{ base: 'inline-block', md: "none" }}

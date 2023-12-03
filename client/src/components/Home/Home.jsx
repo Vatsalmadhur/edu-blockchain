@@ -19,8 +19,8 @@ export const Home = () => {
           <Button width="170px" border="2px solid" borderColor={darkBtn} bg="none" >Get Started <ArrowForwardIcon width={10} height={5} /> </Button>
 
         </Flex>
-        <Image position="absolute" left="50px" top="-400px" width={600} opacity={0.1} src='/img1.svg' />
-        <Image position="absolute" bottom="-400" right="50px" width={600} opacity={0.1} src='/img1.svg' />
+        <Image position="absolute" left="50px" top="-400px" width={600} opacity={0.1} src='/img1.svg' pointerEvents='none' />
+        <Image position="absolute" bottom="-400" right="50px" width={600} opacity={0.1} src='/img1.svg' pointerEvents='none'  />
       </Box>
     </>
   )

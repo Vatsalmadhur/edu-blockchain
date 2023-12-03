@@ -1,9 +1,9 @@
 import React from 'react'
 import { Box, Button, DarkMode, Flex, Input, LightMode, Text, useColorModeValue } from '@chakra-ui/react'
-import '../components/css/global.css'
-import { Toggle } from '../layout/Toggle'
+import '../css/global.css'
+import { Toggle } from '../../layout/Toggle'
 import { ArrowUpIcon } from '@chakra-ui/icons'
-import { DocDetails } from './DocDetails'
+import { DocDetails } from '../Dashboard/DocDetails'
 export const Verify = () => {
   const bg = useColorModeValue('white', 'blackAlpha.50');
   const gradientBorderStyle = {
@@ -31,15 +31,15 @@ export const Verify = () => {
 
         <Flex height="250px" width="300px" direction="column" alignItems="center" justifyContent="space-evenly" >
           <Text className='raleway' fontSize="1.5rem">Choose File to Upload</Text>
-          <Flex gap={5} width="300px" height="50px" justifyContent="space-around" alignItems="center" border="2px solid " borderColor={darkbrdr} borderRadius="10px" ><Box>No File Choosen</Box><Button border="2px solid" borderColor={darkBtn1} bg='none' height="35px">Upload <ArrowUpIcon height={8} width={5} /></Button></Flex>
+
+          <Flex gap={5} width="300px" height="50px" justifyContent="space-around" alignItems="center" border="2px solid " borderColor={darkbrdr} borderRadius="10px" >
+            {/* <Box>No File Choosen</Box><Button border="2px solid" borderColor={darkBtn1} bg='none' height="35px">Upload <ArrowUpIcon height={8} width={5} /></Button> */}
+            <input type='file'/>
+            </Flex>
 
         <Button bg="none" border="2px solid" borderColor={darkBtn2}>Verify</Button>
-
         </Flex>
       </Flex>
-
-
-
       <DocDetails/>
     </Flex>
   )
