@@ -1,21 +1,21 @@
-import {BrowserRouter,Routes,Route} from 'react-router-dom'
-import { Layout } from './layout/Layout';
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { ChakraBaseProvider, extendTheme } from '@chakra-ui/react';
-import { Home } from './components/Home';
+import { Home } from './components/Home/Home';
+import { Verify } from './components/Verify/Verify';
+import { Dashboard } from './components/Dashboard/Dashboard';
+import { Layout } from './layout/Layout';
 function App() {
   return (
     <ChakraBaseProvider theme={extendTheme({})}>
-   <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout>
-          {/* <Route path="/home" element={<Home/>} /> */}
-        </Layout>}>
-          {/* <Route path="blogs" element={<Blogs />} />
-          <Route path="contact" element={<Contact />} />
-          <Route path="*" element={<NoPage />} /> */}
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route  element={<Layout/>} >
+          <Route path="/" element={<Home/>} />
+          <Route path="/dashboard" element={<Dashboard/>} />
+          <Route path="/verify" element={<Verify/>}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </ChakraBaseProvider>
   );
 }
