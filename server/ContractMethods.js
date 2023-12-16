@@ -1,4 +1,4 @@
-const { ethers } = require("ethers");
+const ethers = require("ethers");
 const TaskAbi = require("./DocManager.json");
 
 const TaskContractAddress = "0x01e70cbb2152a68569f39c528328a396a73288d4";

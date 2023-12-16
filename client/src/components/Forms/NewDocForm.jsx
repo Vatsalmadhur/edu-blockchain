@@ -1,43 +1,110 @@
-import { Button, Flex, FormControl, FormHelperText, FormLabel, Input, Stack, Text } from '@chakra-ui/react'
-import React, { useState } from 'react'
-import { useColorModeValue } from '@chakra-ui/react';
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormHelperText,
+  FormLabel,
+  Input,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
+import React, { useState } from "react";
+import { useColorModeValue } from "@chakra-ui/react";
+import axios from "axios";
+import { addDoc } from "../../ContractMethods";
 
 export const NewDocForm = () => {
-    const [input,setInput]=useState('');
-    const isError=input==='';
-  const darkBtn = useColorModeValue('green.300', 'green.300');
+  const [docName, setDocName] = useState("");
+  const [file, setFile] = useState(null);
+  const darkBtn = useColorModeValue("green.300", "green.300");
   const gradientBorderStyle = {
     width: "450px",
-    height:"500px",
-    borderWidth: '2px',
-    borderImage: 'linear-gradient(45deg, #0575e6, #00eb67) 30',
-
+    height: "500px",
+    borderWidth: "2px",
+    borderImage: "linear-gradient(45deg, #0575e6, #00eb67) 30",
   };
-  return (
-    <Flex  style={gradientBorderStyle}  boxShadow='dark-lg' direction="column" alignItems=
-    "center" justifyContent="center">
-      <Flex  direction="column"  alignItems=
-    "center" justifyContent="center" gap={5}>
-      <Text fontSize="1.8rem" fontFamily="Ubuntu" textAlign="center" fontWeight="500">Create new document</Text>
-    <FormControl width="400px" my={5}>
-      <Stack spacing={5}>
-        <FormLabel >
-          Document Title
-        <Input type='Title' value={input} variant="flushed" />
-        {!isError?
-        <FormHelperText>What would you like call your document?</FormHelperText>:
-        <FormHelperText>Please enter a title</FormHelperText>
-        }
-        </FormLabel>
-        <FormLabel>
-        <Input type='file'variant="flushed" />
-        <FormHelperText>Upload the document</FormHelperText>
-        </FormLabel>
-        <Button width="100px" border="2px solid" borderColor={darkBtn} bg="none">Submit</Button>
-        </Stack>
-    </FormControl>
-    </Flex>
-    </Flex>
 
-  )
-}
+  const uploadFile = async () => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("name", docName);
+    const { status: code, data:fileData } = await axios.post(
+      "http://localhost:5000/getIpfsHash",
+      formData,
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    if (code === 200) {
+      const { data, msg, status } = fileData;
+      if (status === true) {
+        await addDoc(docName, data.hash);
+      } else {
+        alert(msg);
+      }
+    } else {
+      alert("Error uploading file");
+    }
+  };
+
+  return (
+    <Flex
+      style={gradientBorderStyle}
+      boxShadow="dark-lg"
+      direction="column"
+      alignItems="center"
+      justifyContent="center"
+    >
+      <Flex
+        direction="column"
+        alignItems="center"
+        justifyContent="center"
+        gap={5}
+      >
+        <Text
+          fontSize="1.8rem"
+          fontFamily="Ubuntu"
+          textAlign="center"
+          fontWeight="500"
+        >
+          Create new document
+        </Text>
+        <FormControl width="400px" my={5}>
+          <Stack spacing={5}>
+            <FormLabel>
+              Document Title
+              <Input
+                type="Title"
+                value={docName}
+                onChange={(e) => setDocName(() => e.target.value)}
+                variant="flushed"
+              />
+              <FormHelperText>Please enter a title</FormHelperText>
+            </FormLabel>
+            <FormLabel>
+              <Input
+                type="file"
+                variant="flushed"
+                onChange={(e) => {
+                  setFile(() => e.target.files[0]);
+                }}
+              />
+              <FormHelperText>Upload the document</FormHelperText>
+            </FormLabel>
+            <Button
+              width="100px"
+              border="2px solid"
+              borderColor={darkBtn}
+              bg="none"
+              onClick={uploadFile}
+            >
+              Submit
+            </Button>
+          </Stack>
+        </FormControl>
+      </Flex>
+    </Flex>
+  );
+};

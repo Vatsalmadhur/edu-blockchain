@@ -8,14 +8,11 @@ import { Toggle } from "../../layout/Toggle";
 import { Box } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useColorModeValue } from "@chakra-ui/react";
-const Navbar = ({ children }) => {
+import { getMyDetails } from "../../ContractMethods";
+const Navbar = ({ children, user, setUser }) => {
   let [accountChanged, setAccChange] = useState(true);
   const [currentAccount, setCurrentAccount] = useState("");
   const [correctNetwork, setCorrectNetwork] = useState(false);
-  const [user, setUser] = useState({
-    connected: false,
-    address: null
-  })
 
   const connectWallet = async () => {
     try {
@@ -91,41 +88,39 @@ const Navbar = ({ children }) => {
     getAccount();
   }, [accountChanged]);
 
-  const disconnectwallet = () => { };
+  const disconnectwallet = () => {};
 
   //hamburger
   const [isOpen, setIsOpen] = useState(false);
-  const bg = useColorModeValue('white', 'blackAlpha.50');
-  const darkBtn = useColorModeValue('cyan.500', 'cyan.500');
-
+  const bg = useColorModeValue("white", "blackAlpha.50");
+  const darkBtn = useColorModeValue("cyan.500", "cyan.500");
 
   return (
     <>
-      <Box id="nav" className={isOpen ? 'flex navMain navResp' : 'flex navMain'} boxShadow="dark-lg" bg={bg} py="10px">
-        <Box className="flex logo" >
+      <Box
+        id="nav"
+        className={isOpen ? "flex navMain navResp" : "flex navMain"}
+        boxShadow="dark-lg"
+        bg={bg}
+        py="10px"
+      >
+        <Box className="flex logo">
           <Link to="/" onClick={() => setIsOpen()}>
             <Image className="logoImg" src="/EduSafe.svg" alt="" py={6} />
           </Link>
         </Box>
 
-        <Box className={isOpen ? 'flex linkResp' : 'flex linkBox'}  >
+        <Box className={isOpen ? "flex linkResp" : "flex linkBox"}>
           <Link to="/" className="link" onClick={() => setIsOpen()}>
-
             <Text className="ad">Home</Text>
-
           </Link>
           <Link to="/dashboard" onClick={() => setIsOpen()}>
-
             <Text className="ad">Dashboard</Text>
-
           </Link>
           <Link to="/verify" onClick={() => setIsOpen()}>
-
             <Text className="ad">Verify</Text>
-
           </Link>
         </Box>
-
 
         <Box
           className={isOpen ? "flex account showBtn" : "flex account hideBtn"}
@@ -133,31 +128,51 @@ const Navbar = ({ children }) => {
         >
           <Box className="flex connect">
             {children}
-            <Button my={{ base: '20px', md: '' }} fontFamily="Ubuntu" bg="none" border="2px solid" borderColor={darkBtn} onClick={user.connected ? () => { } : connectWallet}>
+            <Button
+              my={{ base: "20px", md: "" }}
+              fontFamily="Ubuntu"
+              bg="none"
+              border="2px solid"
+              borderColor={darkBtn}
+              onClick={user.connected ? () => {} : connectWallet}
+            >
               {user.connected
                 ? `${user.address.toString().substring(0, 5)}...${user.address
-                  .toString()
-                  .substring(38, 42)}`
+                    .toString()
+                    .substring(38, 42)}`
                 : "Connect"}
             </Button>
-
           </Box>
-
         </Box>
-        <Box position="absolute" right={{ base: '10px', md: "170px" }} top={{ base: '30px', md: "" }} width="auto"  >
+        <Box
+          position="absolute"
+          right={{ base: "10px", md: "170px" }}
+          top={{ base: "30px", md: "" }}
+          width="auto"
+        >
           <Toggle />
 
-            {isOpen ? <CloseIcon display={{ base: 'inline-block', md: "none" }}
-            width="40px" height="18px" onClick={() => setIsOpen(!isOpen)} /> : <HamburgerIcon display={{ base: 'inline-block', md: "none" }}
-              width="50px" height="25px" onClick={() => setIsOpen(!isOpen)} />}
+          {isOpen ? (
+            <CloseIcon
+              display={{ base: "inline-block", md: "none" }}
+              width="40px"
+              height="18px"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          ) : (
+            <HamburgerIcon
+              display={{ base: "inline-block", md: "none" }}
+              width="50px"
+              height="25px"
+              onClick={() => setIsOpen(!isOpen)}
+            />
+          )}
 
           {/* <HamburgerIcon
             display={{base:'inline-block',  md:"none"}}
             width="50px" height="25px" onClick={() => setIsOpen(!isOpen)} /> */}
         </Box>
-
       </Box>
-
     </>
   );
 };

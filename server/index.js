@@ -1,28 +1,55 @@
-require('dotenv').config()
-const Moralis = require("moralis").default;
-const { EvmChain } = require("@moralisweb3/common-evm-utils");
-const {abi} = require('./DocManager.json');
-const { getContractData } = require('./ContractMethods');
+require("dotenv").config();
+const express = require("express");
+const app = express();
+const http = require("http").Server(app);
+const cors = require("cors");
+const multer = require("multer");
+const pinataSDK = require("@pinata/sdk");
+const { Readable } = require("stream");
+const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT });
 
-const MORALIS_API_KEY = process.env.MORALIS_API_KEY;
+const port = process.env.PORT || 5000;
 
-const runApp = async () => {
-    await Moralis.start({
-        apiKey: MORALIS_API_KEY,
+app.use(express.json());
+app.use(express.urlencoded());
+app.use(cors());
+
+var storage = multer.memoryStorage();
+var upload = multer({ storage: storage });
+
+app.get("/", (_, res) => {
+  res.json({ status: true, msg: "Alive!" });
+});
+
+app.post("/getIpfsHash", upload.single("file"), async (req, res) => {
+  try {
+    const { name } = req.body;
+    const file = req.file;
+    const stream = Readable.from(file.buffer);
+    const options = {
+      pinataMetadata: {
+        name,
+      },
+      pinataOptions: {
+        cidVersion: 1,
+      },
+    };
+    const { IpfsHash } = await pinata.pinFileToIPFS(stream, options);
+    res.json({
+      status: true,
+      data: {
+        hash: IpfsHash,
+      },
+      msg: "success",
     });
+  } catch (e) {
+    res.json({
+      status: false,
+      msg: e.message || "Unexpected server error",
+    });
+  }
+});
 
-    const address = "0x01e70cbb2152a68569f39c528328a396a73288d4";
-
-    const chain = EvmChain.MUMBAI;
-
-
-    const response = await Moralis.EvmApi.events.getContractLogs({
-    address,
-    chain,
-    topic0:"0x5d81a4820ba59743a3a12dfb7406d10cc166b75b18c7743ef47f740487378617"
-  });
-    console.log(response.toJSON());
-    console.log(await getContractData())
-};
-
-runApp();
+http.listen(port, () => {
+  console.log(`running on port ${port}`);
+});
