@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 const TaskAbi = require("./DocManager.json");
-const TaskContractAddress = "0x57C0575321B5De9b77FBc02Df4F79578441AC022";
+const TaskContractAddress = "0x66645beD2DE1833B1a319e8C98099D2fde0B5F14";
 
 const getSigner = async () => {
   const ethereum = window.ethereum;

@@ -17,15 +17,6 @@ contract DocManager {
         address indexed issuer,
         address indexed issuedTo
     );
-    event DocumentAccessGranted(
-        uint256 indexed docId,
-        address indexed grantedAddress
-    );
-    event DocumentAccessRevoked(
-        uint256 indexed docId,
-        address indexed revokedAddress
-    );
-
     struct Document {
         uint256 docId;
         string title;
@@ -40,6 +31,13 @@ contract DocManager {
         string username;
         bool isOrganization;
         uint256[] docs;
+    }
+
+    struct DocRet{
+        uint256 docId;
+        string title;
+        string cid;
+        address issuedTo;
     }
 
     mapping(uint256 => Document) documents;
@@ -151,7 +149,6 @@ contract DocManager {
     {
         documents[_docId].access.push(_to);
 
-        emit DocumentAccessGranted(_docId, _to);
     }
 
     function revokeAccess(uint256 _docId, address _from)
@@ -164,14 +161,21 @@ contract DocManager {
                     documents[_docId].access.length - 1
                 ];
                 documents[_docId].access.pop();
-                emit DocumentAccessRevoked(_docId, _from);
                 break;
             }
         }
     }
 
-    function getMyDocs() external view returns (uint256[] memory) {
-        return users[msg.sender].docs;
+    function getMyDocs() external view returns (DocRet[] memory) {
+        uint256[] memory docs = users[msg.sender].docs;
+        DocRet[] memory ret = new DocRet[](docs.length);
+          for (uint256 i = 0; i < docs.length; i++) {
+                ret[i].docId = documents[docs[i]].docId;
+                ret[i].title = documents[docs[i]].title;
+                ret[i].issuedTo = documents[docs[i]].issuedTo;
+                ret[i].cid = documents[docs[i]].cid;
+        }
+        return ret;
     }
 
     function verify(string memory _cid, address _userid)
