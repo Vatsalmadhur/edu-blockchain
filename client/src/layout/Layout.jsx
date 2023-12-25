@@ -4,8 +4,10 @@ import { Box } from "@chakra-ui/react";
 import { Outlet } from "react-router-dom";
 export const Layout = () => {
   const [user, setUser] = useState({
-    connected: false,
+    status: false,
     address: null,
+    isOrg: false,
+    name: null,
   });
   return (
     <Box width="100vw" overflowY="hidden">

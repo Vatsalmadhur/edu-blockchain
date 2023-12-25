@@ -1,129 +1,141 @@
 import React from "react";
 import "./Navbar.css";
-import { ethers } from "ethers";
-import { useEffect, useState, useCallback, useContext } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { Button, Image, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  FormControl,
+  FormLabel,
+  Image,
+  Input,
+  Modal,
+  ModalBody,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Radio,
+  RadioGroup,
+  Stack,
+  Text,
+  useDisclosure,
+  VStack,
+} from "@chakra-ui/react";
 import { Toggle } from "../../layout/Toggle";
 import { Box } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useColorModeValue } from "@chakra-ui/react";
-import { getMyDetails } from "../../ContractMethods";
+import { createUser, getMyDetails } from "../../ContractMethods";
+import { useFormik } from "formik";
+const PolygonChainId = "0x13881";
 const Navbar = ({ children, user, setUser }) => {
-  let [accountChanged, setAccChange] = useState(true);
-  const [currentAccount, setCurrentAccount] = useState("");
-  const [correctNetwork, setCorrectNetwork] = useState(false);
+  const hamMenu = useDisclosure();
+  const modal = useDisclosure();
+  const bg = useColorModeValue("white", "blackAlpha.50");
+  const darkBtn = useColorModeValue("cyan.500", "cyan.500");
+  const initialValues = {
+    name: "",
+    isOrg: false,
+  };
+
+  const onSubmit = async (values) => {
+    const { status, error } = await createUser(values);
+    if (status) {
+      setUser({
+        status,
+        address: user.address,
+        isOrg: values.isOrg,
+        name: values.name,
+      });
+      modal.onClose();
+    } else {
+      alert(error);
+    }
+  };
+  const { handleSubmit, handleChange, setFieldValue, values } = useFormik({
+    initialValues,
+    onSubmit,
+  });
 
   const connectWallet = async () => {
     try {
       const { ethereum } = window;
-
       if (!ethereum) {
-        console.log("Metamask not detected");
+        alert("MetaMask not found!");
         return;
       }
       let chainId = await ethereum.request({ method: "eth_chainId" });
-      console.log("Connected to chain:" + chainId);
-
-      const PolygonChainId = "0x13881";
 
       if (chainId !== PolygonChainId) {
-        alert("You are not connected to the Polygon Testnet!");
+        alert("Connect your wallet to Polygon Network");
         return;
-      } else {
-        setCorrectNetwork(true);
       }
 
       const accounts = await ethereum.request({
         method: "eth_requestAccounts",
       });
-
-      console.log("Found account", accounts[0]);
-      setUser({
-        connected: true,
-        address: accounts[0],
-      });
-
-      setCurrentAccount(accounts[0]);
+      const { status, isOrg, name } = await getMyDetails();
+      if (status) {
+        setUser((o) => ({
+          ...o,
+          status,
+          address: accounts[0],
+          isOrg,
+          name,
+        }));
+      } else {
+        modal.onOpen();
+      }
     } catch (error) {
       setUser({
         connected: false,
+        address: null,
       });
-
-      console.log("Error connecting to metamask", error);
+      alert("something went wrong");
+      console.log(error.message);
     }
   };
 
   useEffect(() => {
-    if (window.ethereum)
-      window.ethereum.on("accountsChanged", function (accounts) {
-        setAccChange((prev) => {
-          return !prev;
-        });
-      });
+    if (window.ethereum) window.ethereum.on("accountsChanged", connectWallet);
     else
       alert(
         "No Ethereum wallet detected\nThe website may not work as expected\nPlease install Metamask"
       );
   }, []);
 
-  const getAccount = useCallback(async () => {
-    const accounts = await window.ethereum.request({ method: "eth_accounts" });
-    if (accounts.length) {
-      setUser({
-        connected: true,
-        address: accounts[0],
-      });
-      setCurrentAccount(accounts[0]);
-    } else {
-      setUser({
-        connected: false,
-        address: null,
-      });
-      setCurrentAccount("wallet not connected");
-    }
-  }, []);
-
-  useEffect(() => {
-    getAccount();
-  }, [accountChanged]);
-
-  const disconnectwallet = () => {};
-
-  //hamburger
-  const [isOpen, setIsOpen] = useState(false);
-  const bg = useColorModeValue("white", "blackAlpha.50");
-  const darkBtn = useColorModeValue("cyan.500", "cyan.500");
-
   return (
     <>
       <Box
         id="nav"
-        className={isOpen ? "flex navMain navResp" : "flex navMain"}
+        className={hamMenu.isOpen ? "flex navMain navResp" : "flex navMain"}
         boxShadow="dark-lg"
         bg={bg}
         py="10px"
       >
         <Box className="flex logo">
-          <Link to="/" onClick={() => setIsOpen()}>
+          <Link to="/">
             <Image className="logoImg" src="/EduSafe.svg" alt="" py={6} />
           </Link>
         </Box>
 
-        <Box className={isOpen ? "flex linkResp" : "flex linkBox"}>
-          <Link to="/" className="link" onClick={() => setIsOpen()}>
+        <Box className={hamMenu.isOpen ? "flex linkResp" : "flex linkBox"}>
+          <Link to="/" className="link">
             <Text className="ad">Home</Text>
           </Link>
-          <Link to="/dashboard" onClick={() => setIsOpen()}>
+          <Link to="/dashboard">
             <Text className="ad">Dashboard</Text>
           </Link>
-          <Link to="/verify" onClick={() => setIsOpen()}>
+          <Link to="/verify">
             <Text className="ad">Verify</Text>
           </Link>
         </Box>
 
         <Box
-          className={isOpen ? "flex account showBtn" : "flex account hideBtn"}
+          className={
+            hamMenu.isOpen ? "flex account showBtn" : "flex account hideBtn"
+          }
           gap={6}
         >
           <Box className="flex connect">
@@ -136,8 +148,8 @@ const Navbar = ({ children, user, setUser }) => {
               borderColor={darkBtn}
               onClick={user.connected ? () => {} : connectWallet}
             >
-              {user.connected
-                ? `${user.address.toString().substring(0, 5)}...${user.address
+              {user.status
+                ? `${user.address.toString().substring(0, 5)}..${user.address
                     .toString()
                     .substring(38, 42)}`
                 : "Connect"}
@@ -152,27 +164,73 @@ const Navbar = ({ children, user, setUser }) => {
         >
           <Toggle />
 
-          {isOpen ? (
+          {hamMenu.isOpen ? (
             <CloseIcon
               display={{ base: "inline-block", md: "none" }}
               width="40px"
               height="18px"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={hamMenu.onClose}
             />
           ) : (
             <HamburgerIcon
               display={{ base: "inline-block", md: "none" }}
               width="50px"
               height="25px"
-              onClick={() => setIsOpen(!isOpen)}
+              onClick={hamMenu.onOpen}
             />
           )}
-
-          {/* <HamburgerIcon
-            display={{base:'inline-block',  md:"none"}}
-            width="50px" height="25px" onClick={() => setIsOpen(!isOpen)} /> */}
         </Box>
       </Box>
+      <Modal isOpen={modal.isOpen} onClose={modal.onClose} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Signup</ModalHeader>
+          <ModalBody py={4}>
+            <VStack spacing={4}>
+              <FormControl>
+                <FormLabel>Name</FormLabel>
+                <Input
+                  placeholder="Name"
+                  name="name"
+                  onChange={handleChange}
+                  value={values.name}
+                />
+              </FormControl>
+              <FormControl>
+                <Flex gap={4}>
+                  <FormLabel> Is Organisation? </FormLabel>
+                  <RadioGroup
+                    onChange={(e) => {
+                      setFieldValue("isOrg", e === "true");
+                    }}
+                    name="isOrg"
+                    value={values.isOrg}
+                  >
+                    <Stack direction="row">
+                      <Radio value={false}>No</Radio>
+                      <Radio value={true}>Yes</Radio>
+                    </Stack>
+                  </RadioGroup>
+                </Flex>
+              </FormControl>
+            </VStack>
+          </ModalBody>
+          <ModalFooter>
+            <Flex gap={4}>
+              <Button
+                onClick={modal.onClose}
+                colorScheme="red"
+                variant="outline"
+              >
+                Cancel
+              </Button>
+              <Button onClick={handleSubmit} colorScheme="green">
+                Signup
+              </Button>
+            </Flex>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

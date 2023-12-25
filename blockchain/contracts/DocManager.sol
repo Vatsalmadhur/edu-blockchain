@@ -33,11 +33,12 @@ contract DocManager {
         uint256[] docs;
     }
 
-    struct DocRet{
+    struct DocRet {
         uint256 docId;
         string title;
         string cid;
         address issuedTo;
+        address issuedBy;
     }
 
     mapping(uint256 => Document) documents;
@@ -85,10 +86,11 @@ contract DocManager {
         _;
     }
 
-    function getMyDetails() external  view returns (
-        string memory name,
-        bool isOrg
-    ) {
+    function getMyDetails()
+        external
+        view
+        returns (string memory name, bool isOrg)
+    {
         require(
             users[msg.sender].userAddress != address(0),
             "User not registered"
@@ -137,9 +139,11 @@ contract DocManager {
         onlyIssuer(_docId)
         onlyUnIssued(_docId)
     {
+        require(users[_user].userAddress != address(0), "User not registered");
+        require(documents[_docId].docId != 0, "Document not found");
+
         users[_user].docs.push(_docId);
         documents[_docId].issuedTo = _user;
-
         emit DocumentIssued(_docId, msg.sender, _user);
     }
 
@@ -148,7 +152,6 @@ contract DocManager {
         onlyIssuedTo(_docId)
     {
         documents[_docId].access.push(_to);
-
     }
 
     function revokeAccess(uint256 _docId, address _from)
@@ -167,14 +170,22 @@ contract DocManager {
     }
 
     function getMyDocs() external view returns (DocRet[] memory) {
+        require(
+            users[msg.sender].userAddress != address(0),
+            "User not registered"
+        );
+
         uint256[] memory docs = users[msg.sender].docs;
         DocRet[] memory ret = new DocRet[](docs.length);
-          for (uint256 i = 0; i < docs.length; i++) {
-                ret[i].docId = documents[docs[i]].docId;
-                ret[i].title = documents[docs[i]].title;
-                ret[i].issuedTo = documents[docs[i]].issuedTo;
-                ret[i].cid = documents[docs[i]].cid;
+
+        for (uint256 i = 0; i < docs.length; i++) {
+            ret[i].docId = documents[docs[i]].docId;
+            ret[i].title = documents[docs[i]].title;
+            ret[i].issuedBy = documents[docs[i]].issuer;
+            ret[i].issuedTo = documents[docs[i]].issuedTo;
+            ret[i].cid = documents[docs[i]].cid;
         }
+
         return ret;
     }
 
@@ -187,11 +198,20 @@ contract DocManager {
             string memory title
         )
     {
+        require(
+            users[_userid].userAddress != address(0),
+            "User not registered"
+        );
+
+
         for (uint256 i = 0; i < users[_userid].docs.length; i++) {
-            if (keccak256(bytes(documents[i].cid)) == keccak256(bytes(_cid))) {
-                issuedBy = documents[i].issuer;
-                issuedTo = documents[i].issuedTo;
-                title = documents[i].title;
+            uint256 docId = users[_userid].docs[i];
+            if (
+                keccak256(bytes(documents[docId].cid)) == keccak256(bytes(_cid))
+            ) {
+                issuedBy = documents[docId].issuer;
+                issuedTo = documents[docId].issuedTo;
+                title = documents[docId].title;
                 break;
             }
         }

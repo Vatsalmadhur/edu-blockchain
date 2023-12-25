@@ -1,6 +1,8 @@
 import { ethers } from "ethers";
 const TaskAbi = require("./DocManager.json");
-const TaskContractAddress = "0x66645beD2DE1833B1a319e8C98099D2fde0B5F14";
+const TaskContractAddress = "0xB32B60411014322bD0d4C17F49C60375783721EE"
+
+
 
 const getSigner = async () => {
   const ethereum = window.ethereum;
@@ -27,9 +29,9 @@ const getMyDetails = async () => {
   const contract = await getContract();
   try {
     const { name, isOrg } = await contract.getMyDetails();
-    alert(`${name}\nisOrg: ${isOrg}`);
+    return { status: true, name, isOrg };
   } catch (error) {
-    alert(Object.values(error)[0]);
+    return { status: false, error: Object.values(error)[0] };
   }
 };
 
@@ -38,8 +40,9 @@ const getMyDocs = async () => {
   try {
     const txn = await contract.getMyDocs();
     console.log(txn);
+    return { status: true, docs: txn };
   } catch (error) {
-    alert(Object.values(error)[0]);
+    return { status: false, error: Object.values(error)[0] };
   }
 };
 
@@ -64,14 +67,14 @@ const addDoc = async (docName, docHash) => {
   }
 };
 
-const createUser = async (name, isOrg) => {
+const createUser = async ({ name, isOrg }) => {
   const contract = await getContract();
   try {
     const txn = await contract.createUser(name, isOrg);
     await txn.wait();
-    alert("User added successfully");
+    return { status: true };
   } catch (error) {
-    alert(Object.values(error)[0].split(":")[1]);
+    return { status: false, error: Object.values(error)[0] };
   }
 };
 
@@ -80,19 +83,20 @@ const issueDoc = async (docId, userId) => {
   try {
     const txn = await contract.issue(docId, userId);
     await txn.wait();
-    alert("doc issued successfully");
+    return { status: true };
   } catch (error) {
-    alert(Object.values(error)[0].split(":")[1]);
+    return { status: false, error: Object.values(error)[0] };
   }
 };
 
 const verifyDoc = async (docId, userId) => {
   const contract = await getContract();
   try {
-    const txn = await contract.verify(docId, userId);
-    console.log(txn);
+    const txn = await contract.verify(docId, ethers.utils.getAddress(userId));
+    console.log(txn)
+    return { status: true, ...txn };
   } catch (error) {
-    console.log(error);
+    return { status: false, error: Object.values(error)[0] };
   }
 };
 
