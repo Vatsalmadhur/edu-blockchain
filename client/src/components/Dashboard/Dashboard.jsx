@@ -24,6 +24,7 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
+import { useColorModeValue } from "@chakra-ui/react";
 import { NewDocForm } from "../Forms/NewDocForm";
 import {
   getMyDocs,
@@ -32,6 +33,7 @@ import {
 } from "../../ContractMethods";
 import { useOutletContext } from "react-router-dom";
 import { More } from "iconsax-react";
+import { CloseIcon } from "@chakra-ui/icons";
 
 export const Dashboard = () => {
   const { user } = useOutletContext();
@@ -48,6 +50,9 @@ export const Dashboard = () => {
       fetchDocs();
     }
   }, [user]);
+
+  const darkBtn = useColorModeValue("green.300", "green.300");
+
   return (
     <>
       <Flex
@@ -64,7 +69,7 @@ export const Dashboard = () => {
               Hello {user.name},{" "}
             </Heading>
             {!!user.isOrg && (
-              <Button onClick={newDoc.onOpen}>Add New Document</Button>
+              <Button onClick={newDoc.onOpen} border="2px solid" borderColor={darkBtn} bg="none" >Add New Document</Button>
             )}
             {!!myDocs && myDocs.length > 0 ? (
               myDocs.map((doc) => {
@@ -124,7 +129,7 @@ export const Dashboard = () => {
             )}
           </>
         ) : (
-          "Please connect your wallet to proceed"
+          <Text fontSize="2rem" paddingLeft={{base:'10px',md:'auto'}} width="800px" textAlign="center" >OOPS! Looks like your wallet is not connected, connect your wallet to proceed!</Text>
         )}
         <IssueModal
           isOpen={issue.isOpen}
@@ -134,13 +139,12 @@ export const Dashboard = () => {
         <Modal isOpen={newDoc.isOpen} onClose={newDoc.onClose} size="xl">
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Add New Document</ModalHeader>
-            <ModalBody>
+            <ModalHeader>
+          <Button onClick={newDoc.onClose} width="20px" position="absolute" right="10px" margin="5px" borderRadius="50%"><CloseIcon/></Button>
+            </ModalHeader>
+            <ModalBody display="flex" alignItems="center" justifyContent="center" margin={5}>
               <NewDocForm />
             </ModalBody>
-            <ModalFooter>
-              <Button onClick={newDoc.onClose}>Close</Button>
-            </ModalFooter>
           </ModalContent>
         </Modal>
       </Flex>

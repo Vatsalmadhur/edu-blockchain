@@ -12,6 +12,7 @@ import React, { useState } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { verifyDoc } from "../../ContractMethods";
 import { pineFileToIpfs } from "../../Utils";
+import { Box } from "iconsax-react";
 
 export const Verify = () => {
   const [userId, setUserId] = useState("");
@@ -42,6 +43,7 @@ export const Verify = () => {
   };
 
   return (
+    <Flex minHeight="85vh" width='auto' alignItems="center" justifyContent="center" >
     <Flex
       style={gradientBorderStyle}
       boxShadow="dark-lg"
@@ -97,6 +99,7 @@ export const Verify = () => {
           </Stack>
         </FormControl>
       </Flex>
+    </Flex>
     </Flex>
   );
 };
