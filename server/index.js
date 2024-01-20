@@ -25,6 +25,7 @@ app.post("/getIpfsHash", upload.single("file"), async (req, res) => {
   try {
     const { name } = req.body;
     const file = req.file;
+    console.log(name);
     const stream = Readable.from(file.buffer);
     const options = {
       pinataMetadata: {

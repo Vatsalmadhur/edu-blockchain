@@ -34,6 +34,8 @@ import {
 import { useOutletContext } from "react-router-dom";
 import { More } from "iconsax-react";
 import { CloseIcon } from "@chakra-ui/icons";
+import { InputModal } from "../Models/inputmodel";
+import { IssueModal } from "../Models/issuemodel";
 
 export const Dashboard = () => {
   const { user } = useOutletContext();
@@ -149,53 +151,5 @@ export const Dashboard = () => {
         </Modal>
       </Flex>
     </>
-  );
-};
-
-const InputModal = ({ isOpen, onClose, children }) => {
-  return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <ModalOverlay />
-      <ModalContent>
-        <ModalBody>{children}</ModalBody>
-        <ModalFooter>
-          <Button onClick={onClose}>Close</Button>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
-  );
-};
-
-const IssueModal = ({ isOpen, onClose, docId }) => {
-  const [userId, setUserid] = useState("");
-  const [loading, setLoading] = useState(false);
-  const toast = useToast();
-  const handleSubmit = async () => {
-    setLoading(true);
-    const { status, error } = await issueDoc(docId, userId);
-    if (!!status) {
-      toast({
-        title: "Document Issued",
-        status: "success",
-      });
-      onClose();
-    } else {
-      toast({
-        title: error,
-        status: "error",
-      });
-    }
-    setLoading(false);
-  };
-  return (
-    <InputModal isOpen={isOpen || loading} onClose={onClose}>
-      <Input
-        name="issueTo"
-        placeholder="Issue to"
-        onChange={(e) => setUserid(() => e.target.value)}
-      />
-      <Input name="docId" placeholder="Doc Id" value={docId} readOnly />
-      <Button onClick={handleSubmit}>Issue</Button>
-    </InputModal>
   );
 };
