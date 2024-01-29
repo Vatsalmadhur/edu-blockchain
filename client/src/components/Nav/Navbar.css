@@ -35,6 +35,11 @@
     font-weight: 400;
     font-family: 'Ubuntu',sans-serif;
   }
+  .ad:hover{
+    border-bottom: 1px solid;
+    border-color:  #00B5D8;
+    transition: .1s linear;
+  }
   .connect {
     gap: 10px;
   }

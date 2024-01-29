@@ -12,6 +12,9 @@ import React, { useState } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 import axios from "axios";
 import { addDoc } from "../../ContractMethods";
+import { Bounce, ToastContainer, Zoom, toast, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export const NewDocForm = () => {
   const [docName, setDocName] = useState("");
@@ -25,10 +28,11 @@ export const NewDocForm = () => {
   };
 
   const uploadFile = async () => {
+    const load = toast.loading("Adding...")
     const formData = new FormData();
     formData.append("file", file);
     formData.append("name", docName);
-    const { status: code, data:fileData } = await axios.post(
+    const { status: code, data: fileData } = await axios.post(
       "http://localhost:5000/getIpfsHash",
       formData,
       {
@@ -41,14 +45,17 @@ export const NewDocForm = () => {
       const { data, msg, status } = fileData;
       if (status === true) {
         await addDoc(docName, data.hash);
+        // toast.update(load, { render: msg, type: "Added!", isLoading: false, autoClose: 5000 });
+
       } else {
-        alert(msg);
+        toast.update(load, { render: msg, type: "success", isLoading: false, autoClose: 5000 });
+
       }
     } else {
-      alert("Error uploading file");
+      toast.update(load, { render: "An error occured!", type: "error", isLoading: false, autoClose: 5000 });
+
     }
   };
-
   return (
     <Flex
       style={gradientBorderStyle}

@@ -5,10 +5,12 @@ import {
   Text,
   Image,
   useColorModeValue,
+  Link,
 } from "@chakra-ui/react";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 import React from "react";
-import "./Home.css";
+import { Bounce, ToastContainer, Zoom, toast, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Home = () => {
   const darkBtn = useColorModeValue("cyan.500", "cyan.500");
@@ -53,6 +55,7 @@ export const Home = () => {
               in Education.
             </Text>
           </Flex>
+          <Link href="/dashboard">
           <Button
             width="170px"
             border="2px solid"
@@ -61,6 +64,9 @@ export const Home = () => {
           >
             Get Started <ArrowForwardIcon width={10} height={5} />{" "}
           </Button>
+          </Link>
+          <button onClick={() => toast.success("Wow so easy !")}>Toast</button>
+
         </Flex>
         <Image
           position="absolute"
