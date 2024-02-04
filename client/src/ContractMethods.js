@@ -61,7 +61,7 @@ const addDoc = async (docName, docHash) => {
   try {
     const txn = await contract.createDocument(docName, docHash);
     await txn.wait();
-    alert("Document added successfully");
+    // alert("Document added successfully");
   } catch (error) {
     console.log(error);
   }

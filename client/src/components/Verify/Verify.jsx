@@ -12,7 +12,8 @@ import React, { useState } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 import { verifyDoc } from "../../ContractMethods";
 import { pineFileToIpfs } from "../../Utils";
-import { Box } from "iconsax-react";
+import {toast, } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const Verify = () => {
   const [userId, setUserId] = useState("");
@@ -26,6 +27,8 @@ export const Verify = () => {
   };
 
   const handleSubmit = async () => {
+  const load = toast.loading("Adding...")
+
     const { status, msg, data } = await pineFileToIpfs({ file, userId });
     if (status) {
       const { status, issuedTo, issuedBy, title } = await verifyDoc(
@@ -33,17 +36,19 @@ export const Verify = () => {
         userId
       );
       if (status) {
+        toast.update(load, {render: "Doc Issued!",type:"success", isLoading: false, autoClose: 5000 });
         alert(
           `Document verified for ${issuedTo.toString()} by ${issuedBy.toString()} with title ${title.toString()}`
         );
       }
     } else {
+      toast.update(load, { render: "An error occured!", type: "error", isLoading: false, autoClose: 5000 });
       alert(msg);
     }
   };
 
   return (
-    <Flex minHeight="85vh" width='auto' alignItems="center" justifyContent="center" >
+    <Flex minHeight="85vh" width='auto' alignItems="center" justifyContent="center">
     <Flex
       style={gradientBorderStyle}
       boxShadow="dark-lg"

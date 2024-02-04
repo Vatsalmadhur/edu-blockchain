@@ -12,7 +12,7 @@ import React, { useState } from "react";
 import { useColorModeValue } from "@chakra-ui/react";
 import axios from "axios";
 import { addDoc } from "../../ContractMethods";
-import { Bounce, ToastContainer, Zoom, toast, } from 'react-toastify';
+import {toast, } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 
@@ -45,16 +45,17 @@ export const NewDocForm = () => {
       const { data, msg, status } = fileData;
       if (status === true) {
         await addDoc(docName, data.hash);
-        // toast.update(load, { render: msg, type: "Added!", isLoading: false, autoClose: 5000 });
+        toast.update(load, {render: "Doc Added!",type:"success", isLoading: false, autoClose: 5000 });
 
       } else {
-        toast.update(load, { render: msg, type: "success", isLoading: false, autoClose: 5000 });
-
-      }
-    } else {
       toast.update(load, { render: "An error occured!", type: "error", isLoading: false, autoClose: 5000 });
 
+      }
     }
+    // else {
+    //   toast.update(load, { render: "An error occured!", type: "error", isLoading: false, autoClose: 5000 });
+
+    // }
   };
   return (
     <Flex

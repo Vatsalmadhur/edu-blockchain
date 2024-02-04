@@ -44,10 +44,10 @@ export const Home = () => {
               The Blockchain Network for Educational credentials
             </Text>
             <Text
-              width={{ base: "90vw", md: "45vw" }}
+              width={{ base: "90vw", md: "43vw" }}
               fontSize={{ base: "1rem", md: "1.5rem" }}
               fontFamily="Ubuntu"
-              mt={{ base: "20px", md: "" }}
+              mt={{ base: "20px", md: "20px" }}
             >
               Transforming Education's Foundation: Embrace a Future where
               Credentials are Immutable, Accessible, and Secure on a Unified
@@ -65,7 +65,6 @@ export const Home = () => {
             Get Started <ArrowForwardIcon width={10} height={5} />{" "}
           </Button>
           </Link>
-          <button onClick={() => toast.success("Wow so easy !")}>Toast</button>
 
         </Flex>
         <Image

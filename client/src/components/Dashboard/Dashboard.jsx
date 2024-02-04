@@ -79,11 +79,11 @@ export const Dashboard = () => {
                   doc.issuedTo.toString().replaceAll("0", "").toLowerCase() !==
                   "x";
                 return (
-                  <Card>
+                  <Card  marginX="20px">
                     <CardBody>
                       <Flex flexDir="column" gap={1}>
                         <Grid templateColumns="1fr auto">
-                          <Text>
+                          <Text width="auto">
                             {doc.title}
                             {"  "}
                             <Badge
@@ -110,9 +110,9 @@ export const Dashboard = () => {
                             </MenuList>
                           </Menu>
                         </Grid>
-                        <Text>Doc Id: {doc.docId.toString()}</Text>
-                        <Text>Issuer: {doc.issuedBy.toString()}</Text>
-                        <Text>Issued to: {doc.issuedTo.toString()}</Text>
+                        <Text  wordBreak="break-all"><Text fontWeight={700}>Doc Id:</Text> {doc.docId.toString()}</Text>
+                        <Text  wordBreak="break-all"><Text fontWeight={700}>Issuer:</Text>{doc.issuedBy.toString()}</Text>
+                        <Text  wordBreak="break-all"><Text fontWeight={700}>Issued to:</Text> {doc.issuedTo.toString()}</Text>
                       </Flex>
                     </CardBody>
                     <CardFooter>
@@ -131,7 +131,7 @@ export const Dashboard = () => {
             )}
           </>
         ) : (
-          <Text fontSize="2rem" paddingLeft={{base:'10px',md:'auto'}} width="800px" textAlign="center" >OOPS! Looks like your wallet is not connected, connect your wallet to proceed!</Text>
+          <Text fontSize="2rem" paddingLeft={{base:'10px',md:'auto'}} width={{base:'auto',md:'800px'}} textAlign="center" >OOPS! Looks like your wallet is not connected, connect your wallet to proceed!</Text>
         )}
         <IssueModal
           isOpen={issue.isOpen}
